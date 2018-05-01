@@ -3,6 +3,7 @@
 
 #define CAL_WIDTH 20
 #define WEEK_DAYS 7
+#define YEAR_CAL 0
 
 int isLeapYear(int year) {
   /**
@@ -25,7 +26,7 @@ int getDaysOfMonth(int month, int year) {
   return days;
 }
 
-int getStartDay(int month, int year) {
+int getStartDay(int month, int year, int day) {
   /**
    * Algorithm for computing day of Gregorian Calendar:
    * https://cs.uwaterloo.ca/~alopez-o/math-faq/node73.html
@@ -36,7 +37,7 @@ int getStartDay(int month, int year) {
   month = month < 3 ? month + 10 : month - 2; // rolls over the month
 
   startDay = (
-    1 +
+    day +
     ((int) (2.6 * month - 0.2)) -
     (2 * century) +
     year +
@@ -66,24 +67,47 @@ void printMonth(int month) {
 }
 
 void cal(int month, int year) {
-  int startDay = getStartDay(month, year);
-  int space, day;
+  int startDay, space, currentMonth, dayRow, day[3] = { 1, 1, 1 },
+      row, row_limit = month == YEAR_CAL ? 4 : 1,
+      col, col_limit = month == YEAR_CAL ? 3 : 1,
+      month_offset = month == YEAR_CAL ? 1 : 0;
 
-  printMonth(month);
-  printf("\n");
+  for (row = 0; row < row_limit; row++) {
+    day[0] = 1; day[1] = 1; day[2] = 1;
 
-  // Print days of the week
-  printf("Su Mo Tu We Th Fr Sa\n");
+    // Print month labels
+    for (col = 0; col < col_limit; col++) {
+      printMonth((row * (row_limit - 1)) + col + month + month_offset);
+      printf("   ");
+    }
+    printf("\n");
 
-  // Print padded space
-  for (space = 0; space < startDay; space++) printf("   ");
+    // Print day labels
+    for (col = 0; col < col_limit; col++) printf("Su Mo Tu We Th Fr Sa   ");
+    printf("\n");
 
-  // Print days
-  for (day = 1; day < getDaysOfMonth(month, year) + 1; day++, startDay++) {
-    if (day < 10) printf(" ");
-    printf("%i ", day);
-    if ((startDay + 1) % 7 == 0) printf("\n");
+    // Print day
+    for (dayRow = 0; dayRow < 5; dayRow++) {
+      for (col = 0; col < col_limit; col++) {
+        currentMonth = (row * (row_limit - 1)) + col + month + month_offset;
+        startDay = getStartDay(currentMonth, year, day[col]);
+
+        // Print padded spaces
+        for (space = 0; space < startDay; space++) printf("   ");
+
+        // Print days
+        for (; (startDay + 1) % 8 != 0; day[col]++, startDay++) {
+          if (day[col] < 10) printf(" ");
+          if (day[col] <= getDaysOfMonth(currentMonth, year)) printf("%i ", day[col]);
+          else printf("   ");
+        }
+
+        printf("  ");
+      }
+
+      printf("\n");
+    }
+
+    printf("\n");
   }
-
-  printf("\n");
 }
