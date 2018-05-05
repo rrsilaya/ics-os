@@ -26,6 +26,7 @@
 */
 
 #include "console.h"
+#include "contrib/cal.h"
 
 void runner(){
    int i=0;
@@ -870,6 +871,34 @@ int console_execute(const char *str){
          }else{
                printf("Usage: cc <name.exe> <name.c>\n");
          }
+      }
+   }else
+   if (strcmp(u, "cal") == 0) {
+      /**
+       * `cal` command which displays the calendar
+       *   Usage:
+       *   $ cal [month] [year]
+       */
+      u = strtok(0, "");
+      if (u != 0) {
+         char *u2 = strtok(0, "");
+
+         if (u2 != 0) {
+            // Command has two parameters, month and year
+            cal(atoi(u), atoi(u2));
+         } else {
+            // Command has one parameter, -h or year
+
+            if (strcmp(u, "-h")) {
+               // Display help
+               printf("Help should be displayed here.\n");
+            } else {
+               cal(0, atoi(u));
+            }
+         }
+      } else {
+         // Command has no parameters, display the current month's calendar
+         cal(time_systime.month, time_systime.year);
       }
    }else
    if (u[0] == '$'){                      //-- Sends message to a device.

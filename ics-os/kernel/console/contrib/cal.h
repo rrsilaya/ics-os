@@ -1,3 +1,11 @@
+/**
+ * Calendar module contributed by:
+ *   Magnaye, Aaron V.
+ *   Silaya, Ralph Lawrence R.
+ * as part of the requirements for CMSC 125
+ * Second Semester, A.Y. 2017-2018
+ */
+
 #define TRUE 1
 #define FALSE 0
 
@@ -99,14 +107,14 @@ void cal(int month, int year) {
         for (; (startDay + 1) % 8 != 0; day[col]++, startDay++) {
           if (day[col] < 10) printf(" ");
           if (day[col] <= getDaysOfMonth(currentMonth, year)) {
-            // if (year == time_systime.year && currentMonth == time_systime.month && day[col] == time_systime.day) {
-            //   textbackground(WHITE);
-            //   textcolor(BLACK);
-            // }
+            if (year == time_systime.year && currentMonth == time_systime.month && day[col] == time_systime.day) {
+              textbackground(WHITE);
+              textcolor(BLACK);
+            }
 
             printf("%i ", day[col]);
-            // textbackground(BLACK);
-            // textcolor(WHITE);
+            textbackground(BLACK);
+            textcolor(WHITE);
           }
           else printf("   ");
         }
