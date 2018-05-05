@@ -87,7 +87,7 @@ void cal(int month, int year) {
     printf("\n");
 
     // Print day
-    for (dayRow = 0; dayRow < 5; dayRow++) {
+    for (dayRow = 0; dayRow < 6; dayRow++) {
       for (col = 0; col < col_limit; col++) {
         currentMonth = (row * (row_limit - 1)) + col + month + month_offset;
         startDay = getStartDay(currentMonth, year, day[col]);
