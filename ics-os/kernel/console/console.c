@@ -45,6 +45,14 @@ void getstring(char *buf, DEX32_DDL_INFO *dev){
    char c;
    do{
       c=getch();
+
+      if (c == '\t') {
+         /**
+          * Command auto-complete
+          */
+         printf("Auto-complete command strikes!");
+      }
+
       if (c=='\r' || c=='\n' || c==0xa) 
          break;
 
