@@ -889,7 +889,7 @@ int console_execute(const char *str){
          } else {
             // Command has one parameter, -h or year
 
-            if (strcmp(u, "-h")) {
+            if (strcmp(u, "-h") == 0) {
                // Display help
                printf("Help should be displayed here.\n");
             } else {

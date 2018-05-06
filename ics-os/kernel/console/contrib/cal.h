@@ -105,13 +105,13 @@ void cal(int month, int year) {
 
         // Print days
         for (; (startDay + 1) % 8 != 0; day[col]++, startDay++) {
+          if (year == time_systime.year && currentMonth == time_systime.month && day[col] == time_systime.day) {
+            textbackground(WHITE);
+            textcolor(BLACK);
+          }
+
           if (day[col] < 10) printf(" ");
           if (day[col] <= getDaysOfMonth(currentMonth, year)) {
-            if (year == time_systime.year && currentMonth == time_systime.month && day[col] == time_systime.day) {
-              textbackground(WHITE);
-              textcolor(BLACK);
-            }
-
             printf("%i ", day[col]);
             textbackground(BLACK);
             textcolor(WHITE);
