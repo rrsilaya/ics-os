@@ -887,9 +887,9 @@ int console_execute(const char *str){
        *   Usage:
        *   $ cal [month] [year]
        */
-      u = strtok(0, "");
+      u = strtok(0, " ");
       if (u != 0) {
-         char *u2 = strtok(0, "");
+         char *u2 = strtok(0, " ");
 
          if (u2 != 0) {
             // Command has two parameters, month and year
