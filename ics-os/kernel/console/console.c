@@ -26,7 +26,73 @@
 */
 
 #include "console.h"
+<<<<<<< HEAD
+// #include <malloc.h>
+
+typedef struct command_tag{ // structure of a command
+   
+   char * word; // the command
+   struct command_tag * next; // the previous command entered
+
+}COMMAND;
+
+typedef struct commands_tag{ // a structure that holds commands
+
+   COMMAND * head; // the most recent command put
+   int size;
+   int current_command_index; // the command that's currently showed by the program
+
+}COMMANDS;
+
+COMMAND * init_Command(char * buffer){ // creates a COMMAND entity with the current buffer content
+   COMMAND * toReturn = (COMMAND *) malloc(sizeof(COMMAND));
+
+   char * command = (char *) malloc(255 * sizeof(char));
+   strcpy(command, buffer);
+
+   toReturn->word = command;
+   toReturn->next = NULL;
+
+   return toReturn;
+}
+
+COMMANDS * init_CommandLine(){ // initializes a COMMANDS structure
+   COMMANDS * cl = (COMMANDS *) malloc(sizeof(COMMANDS));
+   cl->head = NULL;
+   cl->size = 0;
+   cl->current_command_index = -1;
+
+   return cl;
+}
+
+void reset_current_command_index(COMMANDS ** cl){
+   (*cl)->current_command_index = -1;
+}
+
+void addCommand(COMMANDS ** cl, COMMAND ** toADD){ // insert at head
+   (*toADD)->next = (*cl)->head; // toADD => cl(head)
+   (*cl)->head = (*toADD); // cl(head) => toADD
+}
+
+void printCommands(COMMANDS * cl){
+   COMMAND * traverser = cl->head;
+
+   printf("******************Commands Print********************\n");
+
+   while(traverser != NULL){
+      printf("traverser kun\n");
+      traverser = traverser->next;
+   }
+
+   printf("******************Commands Print********************\n");
+
+}
+
+// COMMANDS * commands = init_CommandLine();
+COMMANDS * commands;
+=======
 #include "contrib/cal.h"
+>>>>>>> 10775f961d802db96c6f4cbda65ddaee19ebfd4e
 
 void runner(){
    int i=0;
@@ -34,7 +100,20 @@ void runner(){
       i++;
       i--;
    }
-   //printf("Hello user thread!\n");
+}
+
+void clearBuffer(char ** buf){
+   (*buf)[0] = '\0';
+}
+
+void Dex32PutWord(char * c, char *buf, DEX32_DDL_INFO *dev){
+   unsigned int i=0;
+   int index;
+   strcpy(buf, c);
+   for( index = 0; index < strlen(c); index++ ){
+      Dex32PutChar(dev,Dex32GetX(dev),Dex32GetY(dev),buf[i]=c,Dex32GetAttb(dev));
+      i++;
+   }
 }
 
   
@@ -43,9 +122,17 @@ upon receving \r */
 void getstring(char *buf, DEX32_DDL_INFO *dev){
    unsigned int i=0;
    char c;
+   char word[] = "help";
+   commands = (COMMANDS *) malloc(sizeof(COMMANDS));  
    do{
       c=getch();
 
+<<<<<<< HEAD
+
+      if (c=='\r' || c=='\n' || c==0xa){
+         COMMAND * newCommand = init_Command(buf);
+         addCommand(&commands, &newCommand);
+=======
       if (c == '\t') {
          /**
           * Command auto-complete
@@ -54,9 +141,27 @@ void getstring(char *buf, DEX32_DDL_INFO *dev){
       }
 
       if (c=='\r' || c=='\n' || c==0xa) 
+>>>>>>> 10775f961d802db96c6f4cbda65ddaee19ebfd4e
          break;
+      }
 
-      if (c=='\b' || (unsigned char)c == 145){
+      /*
+      *  Algorithm for getting the previous commands by up and down
+      *     detect key press of up || down
+      *     delete current buffer
+      *        swap the 
+      *     print last word
+      *
+      *
+      *  
+      *     
+      */
+
+      if((unsigned char)c==151){
+
+         
+            
+      }else if (c=='\b' || (unsigned char)c == 145){
          if(i>0){
             i--;
             if (Dex32GetX(dev)==0){
@@ -82,8 +187,11 @@ void getstring(char *buf, DEX32_DDL_INFO *dev){
 
       Dex32PutChar(dev,Dex32GetX(dev),Dex32GetY(dev),' ',Dex32GetAttb(dev));
       update_cursor(Dex32GetY(dev),Dex32GetX(dev));
+
    }while (c!='\r');
     
+   // printCommands(commands);
+
    Dex32SetX(dev,0);
    Dex32NextLn(dev);
    buf[i]=0;
@@ -851,7 +959,7 @@ int console_execute(const char *str){
       if (u!=0){
          if (module_unload_library(u) == -1)
             printf("Error unloading library");
-   	};
+      };
    }else
    if (strcmp(u,"demo_graphics") == 0){   //-- Runs the graphics demonstration.
       demo_graphics();
