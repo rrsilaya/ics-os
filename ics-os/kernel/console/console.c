@@ -27,7 +27,9 @@
 
 #include "console.h"
 #include "contrib/cal.h"
-#include "contrib/commands.h"
+//#include "contrib/commands.h"
+
+#define UP_KEY 151
 
 void runner(){
    int i=0;
@@ -58,14 +60,12 @@ void getstring(char *buf, DEX32_DDL_INFO *dev){
    unsigned int i=0;
    char c;
    char word[] = "help";
-   commands = (COMMANDS *) malloc(sizeof(COMMANDS));  
+   //commands = (COMMANDS *) malloc(sizeof(COMMANDS));  
+   
    do{
       c=getch();
 
 
-      if (c=='\r' || c=='\n' || c==0xa){
-         COMMAND * newCommand = init_Command(buf);
-         addCommand(&commands, &newCommand);
       if (c == '\t') {
          /**
           * Command auto-complete
@@ -73,27 +73,28 @@ void getstring(char *buf, DEX32_DDL_INFO *dev){
          printf("Auto-complete command strikes!");
       }
 
-      if (c=='\r' || c=='\n' || c==0xa) 
-         break;
+      if (c=='\r' || c=='\n' || c==0xa) {
+         //COMMAND * newCommand = init_Command(buf);
+         //addCommand(&commands, &newCommand);
+         
+         break;      
       }
 
-      /*
-      *  Algorithm for getting the previous commands by up and down
-      *     detect key press of up || down
-      *     delete current buffer
-      *        swap the 
-      *     print last word
-      *
-      *
-      *  
-      *     
-      */
 
-      if((unsigned char)c==151){
-
+      if((unsigned char) c == UP_KEY){
+         /*
+          *  Algorithm for getting the previous commands by up and down
+          *     detect key press of up || down
+          *     delete current buffer
+          *        swap the 
+          *     print last word
+          *     
+          */
+      
          printf("previous command\n");
-            
-      }else if (c=='\b' || (unsigned char)c == 145){
+      }
+      
+      if (c=='\b' || (unsigned char)c == 145){
          if(i>0){
             i--;
             if (Dex32GetX(dev)==0){

@@ -1,5 +1,7 @@
 ICS-OS Commands
 ---------------
+925:   if (strcmp(u, "cal") == 0) {
+941:            if (strcmp(u, "-h") == 0) {
 cc- Builds a C program (invokes tcc.exe). Args: <name.exe> <name.c>
 cd- Changes working directory. Args: <directory>
 cls- Clears the screen. 
