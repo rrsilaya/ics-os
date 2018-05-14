@@ -37,7 +37,7 @@ int getBufferIndex(char *buffer) {
   return count;
 }
 
-void writeToStdOut(char *cmd, char **buffer, DEX32_DDL_INFO *dev) {
+void writeToStdOut(char *cmd, char **buffer, DEX32_DDL_INFO *dev, int *i) {
   int offset;
   char buf[MAX_CLI];
 
@@ -49,6 +49,7 @@ void writeToStdOut(char *cmd, char **buffer, DEX32_DDL_INFO *dev) {
     
     // Update Dex32 X offset
     Dex32SetX(dev, Dex32GetX(dev) + 1);
+    (*i)++;
   }
 
   // Space
@@ -57,12 +58,11 @@ void writeToStdOut(char *cmd, char **buffer, DEX32_DDL_INFO *dev) {
   buf[offset + 1] = '\0';
   Dex32SetX(dev, Dex32GetX(dev) + 1);
 
-  printf("%s", buf);
-
   memcpy(*buffer, buf, offset + 1);
+  *i = (*i) + 1;
 }
 
-void auto_complete(char **buf, DEX32_DDL_INFO *dev) {
+void auto_complete(char **buf, DEX32_DDL_INFO *dev, int *i) {
   char *commands[COMMAND_LEN] = {
     "cal", "cc", "cd", "cls",
     "copy", "cpuid", "del",
@@ -86,6 +86,6 @@ void auto_complete(char **buf, DEX32_DDL_INFO *dev) {
   if (getBufferIndex(*buf) == 1) {
     index = getCommandIndex(*buf, commands);
     
-    if (index != -1) writeToStdOut(commands[index], buf, dev);
+    if (index != -1) writeToStdOut(commands[index], buf, dev, i);
   }
 }

@@ -63,6 +63,8 @@ void getstring(char *buf, DEX32_DDL_INFO *dev){
    char word[] = "help";
    //commands = (COMMANDS *) malloc(sizeof(COMMANDS));  
    
+   buf[0] = '\0';
+
    do{
       c=getch();
 
@@ -71,9 +73,9 @@ void getstring(char *buf, DEX32_DDL_INFO *dev){
          /**
           * Command auto-complete
           */
-         auto_complete(&buf, dev);
-      } else
-      if (c=='\r' || c=='\n' || c==0xa) {
+         auto_complete(&buf, dev, &i);
+      } else if (c == '0') printf("%s", buf);
+      else if (c=='\r' || c=='\n' || c==0xa) {
          //COMMAND * newCommand = init_Command(buf);
          //addCommand(&commands, &newCommand);
          
@@ -94,6 +96,7 @@ void getstring(char *buf, DEX32_DDL_INFO *dev){
       if (c=='\b' || (unsigned char)c == 145){
          if(i>0){
             i--;
+            buf[i] = '\0';
             if (Dex32GetX(dev)==0){
                Dex32SetX(dev,79);
                if (Dex32GetY(dev)>0) 
@@ -1031,7 +1034,7 @@ void console_main(){
       if (strcmp(s,"@@")!=0 && strcmp(s,"!!")!=0)
          strcpy(last,s);
     
-      getstring(s, myddl);
+      getstring(&s, myddl);
    
       if (strcmp(s,"!")==0){
          sendtokeyb(last,&_q);
