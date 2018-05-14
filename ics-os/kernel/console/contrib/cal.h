@@ -112,9 +112,10 @@ void cal(int month, int year) {
 
           if (day[col] < 10) printf(" ");
           if (day[col] <= getDaysOfMonth(currentMonth, year)) {
-            printf("%i ", day[col]);
+            printf("%i", day[col]);
             textbackground(BLACK);
             textcolor(WHITE);
+            printf(" ");
           }
           else printf("   ");
         }
