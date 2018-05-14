@@ -27,6 +27,7 @@
 
 #include "console.h"
 #include "contrib/cal.h"
+#include "contrib/commands.h"
 
 void runner(){
    int i=0;
@@ -34,7 +35,20 @@ void runner(){
       i++;
       i--;
    }
-   //printf("Hello user thread!\n");
+}
+
+void clearBuffer(char ** buf){
+   (*buf)[0] = '\0';
+}
+
+void Dex32PutWord(char * c, char *buf, DEX32_DDL_INFO *dev){
+   unsigned int i=0;
+   int index;
+   strcpy(buf, c);
+   for( index = 0; index < strlen(c); index++ ){
+      Dex32PutChar(dev,Dex32GetX(dev),Dex32GetY(dev),buf[i]=c,Dex32GetAttb(dev));
+      i++;
+   }
 }
 
   
@@ -43,9 +57,15 @@ upon receving \r */
 void getstring(char *buf, DEX32_DDL_INFO *dev){
    unsigned int i=0;
    char c;
+   char word[] = "help";
+   commands = (COMMANDS *) malloc(sizeof(COMMANDS));  
    do{
       c=getch();
 
+
+      if (c=='\r' || c=='\n' || c==0xa){
+         COMMAND * newCommand = init_Command(buf);
+         addCommand(&commands, &newCommand);
       if (c == '\t') {
          /**
           * Command auto-complete
@@ -55,8 +75,25 @@ void getstring(char *buf, DEX32_DDL_INFO *dev){
 
       if (c=='\r' || c=='\n' || c==0xa) 
          break;
+      }
 
-      if (c=='\b' || (unsigned char)c == 145){
+      /*
+      *  Algorithm for getting the previous commands by up and down
+      *     detect key press of up || down
+      *     delete current buffer
+      *        swap the 
+      *     print last word
+      *
+      *
+      *  
+      *     
+      */
+
+      if((unsigned char)c==151){
+
+         printf("previous command\n");
+            
+      }else if (c=='\b' || (unsigned char)c == 145){
          if(i>0){
             i--;
             if (Dex32GetX(dev)==0){
@@ -82,8 +119,11 @@ void getstring(char *buf, DEX32_DDL_INFO *dev){
 
       Dex32PutChar(dev,Dex32GetX(dev),Dex32GetY(dev),' ',Dex32GetAttb(dev));
       update_cursor(Dex32GetY(dev),Dex32GetX(dev));
+
    }while (c!='\r');
     
+   // printCommands(commands);
+
    Dex32SetX(dev,0);
    Dex32NextLn(dev);
    buf[i]=0;
@@ -851,7 +891,7 @@ int console_execute(const char *str){
       if (u!=0){
          if (module_unload_library(u) == -1)
             printf("Error unloading library");
-   	};
+      };
    }else
    if (strcmp(u,"demo_graphics") == 0){   //-- Runs the graphics demonstration.
       demo_graphics();
