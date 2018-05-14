@@ -1,3 +1,11 @@
+/**
+ * Shell auto-complete module contributed by:
+ *   Magnaye, Aaron V.
+ *   Silaya, Ralph Lawrence R.
+ * as part of the requirements for CMSC 125
+ * Second Semester, A.Y. 2017-2018
+ */
+
 #define COMMAND_LEN 47
 #define MAX_CLI 255
 
@@ -55,7 +63,6 @@ void writeToStdOut(char *cmd, char **buffer, DEX32_DDL_INFO *dev, int *i) {
   // Space
   Dex32PutChar(dev, Dex32GetX(dev), Dex32GetY(dev), ' ', Dex32GetAttb(dev));
   buf[offset] = ' ';
-  //buf[offset + 1] = '\0';
   Dex32SetX(dev, Dex32GetX(dev) + 1);
 
   memcpy(*buffer, buf, offset + 1);
