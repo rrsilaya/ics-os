@@ -63,7 +63,7 @@ void getstring(char *buf, DEX32_DDL_INFO *dev){
    char word[] = "help";
    //commands = (COMMANDS *) malloc(sizeof(COMMANDS));  
    
-   buf[0] = '\0';
+   memset(buf, 0, MAX_CLI); // clear buffer
 
    do{
       c=getch();
@@ -74,8 +74,8 @@ void getstring(char *buf, DEX32_DDL_INFO *dev){
           * Command auto-complete
           */
          auto_complete(&buf, dev, &i);
-      } else if (c == '0') printf("%s", buf);
-      else if (c=='\r' || c=='\n' || c==0xa) {
+      } else
+      if (c=='\r' || c=='\n' || c==0xa) {
          //COMMAND * newCommand = init_Command(buf);
          //addCommand(&commands, &newCommand);
          

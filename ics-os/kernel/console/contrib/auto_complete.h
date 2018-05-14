@@ -55,7 +55,7 @@ void writeToStdOut(char *cmd, char **buffer, DEX32_DDL_INFO *dev, int *i) {
   // Space
   Dex32PutChar(dev, Dex32GetX(dev), Dex32GetY(dev), ' ', Dex32GetAttb(dev));
   buf[offset] = ' ';
-  buf[offset + 1] = '\0';
+  //buf[offset + 1] = '\0';
   Dex32SetX(dev, Dex32GetX(dev) + 1);
 
   memcpy(*buffer, buf, offset + 1);
@@ -69,9 +69,9 @@ void auto_complete(char **buf, DEX32_DDL_INFO *dev, int *i) {
     "demo_graphics", "dkill", "echo",
     "exit", "fgman", "files",
     "find", "help", "kill",
-    "libinfo", "loadmod", "lsdev",
+    "libinfo", "loadmod", "ls", "lsdev",
     "lsext", "lsmod", "lspcut",
-    "ls", "meminfo", "mem",
+    "meminfo", "mem",
     "mkdir", "mount", "mouse",
     "newconsole", "off", "pause",
     "pcut", "procinfo", "procs",
