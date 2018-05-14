@@ -71,16 +71,13 @@ void getstring(char *buf, DEX32_DDL_INFO *dev){
           * Command auto-complete
           */
          printf("Auto-complete command strikes!");
-      }
-
+      } else
       if (c=='\r' || c=='\n' || c==0xa) {
          //COMMAND * newCommand = init_Command(buf);
          //addCommand(&commands, &newCommand);
          
          break;      
-      }
-
-
+      } else
       if((unsigned char) c == UP_KEY){
          /*
           *  Algorithm for getting the previous commands by up and down
@@ -92,8 +89,7 @@ void getstring(char *buf, DEX32_DDL_INFO *dev){
           */
       
          printf("previous command\n");
-      }
-      
+      } else      
       if (c=='\b' || (unsigned char)c == 145){
          if(i>0){
             i--;
