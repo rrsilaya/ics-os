@@ -27,6 +27,7 @@
 
 #include "console.h"
 #include "contrib/cal.h"
+#include "contrib/auto_complete.h"
 //#include "contrib/commands.h"
 
 #define UP_KEY 151
@@ -70,7 +71,7 @@ void getstring(char *buf, DEX32_DDL_INFO *dev){
          /**
           * Command auto-complete
           */
-         printf("Auto-complete command strikes!");
+         auto_complete(&buf, dev);
       } else
       if (c=='\r' || c=='\n' || c==0xa) {
          //COMMAND * newCommand = init_Command(buf);
