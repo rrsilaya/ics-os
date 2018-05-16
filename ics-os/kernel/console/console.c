@@ -27,10 +27,11 @@
 
 #include "console.h"
 #include "contrib/cal.h"
-#include "contrib/auto_complete.h"
-//#include "contrib/commands.h"
+// #include "contrib/auto_complete.h"
+#include "contrib/commands.h"
 
 #define UP_KEY 151
+#define DOWN_KEY 152 
 
 void runner(){
    int i=0;
@@ -54,14 +55,14 @@ void Dex32PutWord(char * c, char *buf, DEX32_DDL_INFO *dev){
    }
 }
 
+COMMANDS * commands;
   
 /*A console mode get string function terminates
 upon receving \r */
 void getstring(char *buf, DEX32_DDL_INFO *dev){
    unsigned int i=0;
    char c;
-   char word[] = "help";
-   //commands = (COMMANDS *) malloc(sizeof(COMMANDS));  
+   
    
    memset(buf, 0, MAX_CLI); // clear buffer
 
@@ -69,43 +70,44 @@ void getstring(char *buf, DEX32_DDL_INFO *dev){
       c=getch();
 
 
+
       if (c == '\t') {
          /**
           * Command auto-complete
           */
          auto_complete(&buf, dev, &i);
+
+      } else
+      if ((unsigned char) c == UP_KEY) {
+         /*  
+          * Prints the previous command     
+          */
+
+         prevCommand(&commands, &buf, dev, &i);
+         // printf("cci = %d\n", commands->current_command_index);
+
+      } else 
+      if ((unsigned char) c == DOWN_KEY){
+         /*
+         *  Prints the commands accordingly
+         *
+         */
+
+         nextCommand(&commands, &buf, dev, &i);
+         // printf("cci = %d\n", commands->current_command_index);
+
       } else
       if (c=='\r' || c=='\n' || c==0xa) {
-         //COMMAND * newCommand = init_Command(buf);
-         //addCommand(&commands, &newCommand);
-         
+
+         addCommand(&commands, buf);
+
          break;      
+
       } else
-      if((unsigned char) c == UP_KEY){
-         /*
-          *  Algorithm for getting the previous commands by up and down
-          *     detect key press of up || down
-          *     delete current buffer
-          *        swap the 
-          *     print last word
-          *     
-          */
-      
-         printf("previous command\n");
-      } else      
       if (c=='\b' || (unsigned char)c == 145){
-         if(i>0){
-            i--;
-            buf[i] = '\0';
-            if (Dex32GetX(dev)==0){
-               Dex32SetX(dev,79);
-               if (Dex32GetY(dev)>0) 
-                  Dex32SetY(dev,Dex32GetY(dev)-1);
-            }else{
-               Dex32SetX(dev,Dex32GetX(dev)-1);
-            }     
-            Dex32PutChar(dev,Dex32GetX(dev),Dex32GetY(dev),' ',Dex32GetAttb(dev));
-         };
+
+         removeLetter(&buf, dev, &i);
+
       }else{
          if (i<256){  //maximum command line is only 255 characters
             Dex32PutChar(dev,Dex32GetX(dev),Dex32GetY(dev),buf[i]=c,Dex32GetAttb(dev));
@@ -596,6 +598,7 @@ int console_execute(const char *str){
    }else 
    if (strcmp(u,"shutdown") == 0){  //-- Shuts down the system.
       sendmessage(0,MES_SHUTDOWN,0);
+      freeCommandList(&commands);
    }else
    if (strcmp(u,"procinfo") == 0){  //-- Show process information. Args: <pid>
       int pid;             
@@ -1005,6 +1008,8 @@ void console_main(){
    char last[256]="";
    char console_fmt[256]="%cdir% %% ";
    char console_prompt[256]="cmd >";
+
+   commands = init_CommandLine();  
     
    DWORD ptr;
     
