@@ -16,12 +16,14 @@ typedef struct commands_tag{ // a structure that holds commands
 
 COMMAND * init_Command(char * buffer){ // creates a COMMAND entity with the current buffer content
    COMMAND * toReturn = (COMMAND *) malloc(sizeof(COMMAND));
+   char cmd[255];
 
+   memcpy(cmd, buffer, strlen(buffer));
    char * command = (char *) malloc(255 * sizeof(char));
-   char * ptr = strtok(buffer," ");
+   char * ptr = strtok(cmd," ");
 
 
-   strcpy(command, buffer);
+   strcpy(command, cmd);
 
 
    toReturn->word = command;

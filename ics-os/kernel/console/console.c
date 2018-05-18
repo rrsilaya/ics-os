@@ -98,7 +98,6 @@ void getstring(char *buf, DEX32_DDL_INFO *dev){
 
       } else
       if (c=='\r' || c=='\n' || c==0xa) {
-
          addCommand(&commands, buf);
 
          break;      
@@ -931,8 +930,8 @@ int console_execute(const char *str){
        *   Usage:
        *   $ cal [month] [year]
        */
-
       u = strtok(0, " ");
+
       if (u != 0) {
          char *u2 = strtok(0, " ");
 
