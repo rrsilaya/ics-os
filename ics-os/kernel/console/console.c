@@ -931,6 +931,7 @@ int console_execute(const char *str){
        *   Usage:
        *   $ cal [month] [year]
        */
+
       u = strtok(0, " ");
       if (u != 0) {
          char *u2 = strtok(0, " ");
@@ -943,7 +944,7 @@ int console_execute(const char *str){
 
             if (strcmp(u, "-h") == 0) {
                // Display help
-               printf("Help should be displayed here.\n");
+               cal_help();
             } else {
                cal(0, atoi(u));
             }

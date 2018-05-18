@@ -186,6 +186,8 @@ void nextCommand(COMMANDS ** commands, char ** buf,  DEX32_DDL_INFO * dev, int *
    char * next = getCommand(*commands)->word;
       
    writeToStdOut(next, buf, dev, i);
+
+   removeLetter(buf, dev, i);
 }
 
 void freeCommandList(COMMANDS ** cl){ // frees all the commands in a command list

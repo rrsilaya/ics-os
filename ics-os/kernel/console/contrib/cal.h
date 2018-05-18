@@ -74,11 +74,28 @@ void printMonth(int month) {
   for (i = 0; i < CAL_WIDTH - (pad + strlen(months[month - 1])); i++) printf(" ");
 }
 
+void cal_help(){
+
+  printf("NAME\n");
+  printf("\tcal - displays a simple, formatted calendar.\n\n");
+
+  printf("SYNTAX\n");
+  printf("\tcal\t\ncal [-month] [-year]\t\ncal -h\n\n");
+
+  printf("DESCRIPTION\n");
+  printf("The cal utility displays a simple calendar in traditional format. The format is a little cramped but it makes a year fit on a small terminal. If arguments are not specified, the current month is displayed. \n\n");
+  printf("The options are as follows: \n");
+  printf("\t-h\tDisplays help\n\n");
+
+
+}
+
 void cal(int month, int year) {
   int startDay, space, currentMonth, dayRow, day[3] = { 1, 1, 1 },
       row, row_limit = month == YEAR_CAL ? 4 : 1,
       col, col_limit = month == YEAR_CAL ? 3 : 1,
       month_offset = month == YEAR_CAL ? 1 : 0;
+  char catcher;
 
   for (row = 0; row < row_limit; row++) {
     day[0] = 1; day[1] = 1; day[2] = 1;
@@ -126,6 +143,17 @@ void cal(int month, int year) {
       printf("\n");
     }
 
-    printf("\n");
+    if(row%2 == 1 && row != row_limit - 1){
+
+      printf("Press any key to continue; press q if you want to quit.\n");
+      catcher = getch();
+
+      if(catcher == 'q')return;
+
+      clrscr();
+
+    }
+
+    // printf("\n");
   }
 }
