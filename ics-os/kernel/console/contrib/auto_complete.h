@@ -10,6 +10,11 @@
 #define MAX_CLI 255
 
 int getCommandIndex(char *buffer, char **commands) {
+  /**
+   * Returns the index of the nearest command
+   * in the list.
+   */
+
   char cmd[MAX_CLI];
   int substr, index,
       buf_len = strlen(buffer), cmd_len;
@@ -31,6 +36,10 @@ int getCommandIndex(char *buffer, char **commands) {
 }
 
 int getBufferIndex(char *buffer) {
+  /**
+   * Returns the number of index of buffer.
+   */
+
   char buf[MAX_CLI], *_;
   int count = 0;
 
@@ -46,6 +55,10 @@ int getBufferIndex(char *buffer) {
 }
 
 void writeToStdOut(char *cmd, char **buffer, DEX32_DDL_INFO *dev, int *i) {
+  /**
+   * Updates the stdout with values.
+   */
+
   int offset;
   char buf[MAX_CLI];
 
@@ -91,6 +104,7 @@ void auto_complete(char **buf, DEX32_DDL_INFO *dev, int *i) {
   int index;
 
   if (getBufferIndex(*buf) == 1) {
+    // auto-complete will only trigger if buffer is command
     index = getCommandIndex(*buf, commands);
     
     if (index != -1) writeToStdOut(commands[index], buf, dev, i);

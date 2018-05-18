@@ -27,7 +27,7 @@
 
 #include "console.h"
 #include "contrib/cal.h"
-// #include "contrib/auto_complete.h"
+#include "contrib/auto_complete.h"
 #include "contrib/commands.h"
 
 #define UP_KEY 151

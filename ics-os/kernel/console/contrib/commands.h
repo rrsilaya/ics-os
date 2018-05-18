@@ -1,4 +1,3 @@
-#include "auto_complete.h"
 typedef struct command_tag{ // structure of a command
    
    char * word; // the command
